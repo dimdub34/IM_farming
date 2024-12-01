@@ -1,0 +1,114 @@
+{{ block styles }}
+<style>
+    table tr {
+        vertical-align: middle;
+    }
+</style>
+{{ endblock }}
+
+{{ block title }}
+Partie 5 - Décisions
+{{ endblock }}
+
+{{ block content }}
+
+<div class="text-end mb-3">
+    <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#modal_content">
+        Instructions
+    </button>
+</div>
+
+<div class="card bg-light mb-3">
+    <div class="card-body">
+        <p>
+            Vous avez choisi la couleur {{ if player.color_red }} ROUGE {{ else }} BLEUE {{ endif }}.
+        </p>
+        <p class="text-muted">
+            <u>Remarque</u> : si vous préférez l'urne A pour une ligne alors vous la préférez pour les
+            lignes qui suivent, et de la même façon, si vous préférez l'urne B pour une ligne alors vous la préférez
+            pour les lignes qui précèdent. Le programme informatique assure cette cohérence en sélectionnant automatiquement vos
+            choix lorsque vous passez A à B ou de B à A.
+        </p>
+    </div>
+</div>
+
+<table id="tb_ambiguity" class="table table-bordered table-sm text-center">
+    <thead class="bg-light">
+    <tr>
+        <th rowspan="2" style="vertical-align: middle">Décision</th>
+        <th colspan="2"><span class="text-info">URNE A</span> <br> 5 boules ROUGES et 5 boules BLEUES</th>
+        <th colspan="2"><span class="text-info">URNE B</span> <br> 10 boules, toutes ROUGES ou toutes BLEUES</th>
+        <th rowspan="2" style="vertical-align: middle">Votre choix (urne A ou B)</th>
+    </tr>
+    <tr>
+        <th>Gain si vous tirez la couleur choisie</th>
+        <th>Gain si vous tirez la couleur non choisie</th>
+        <th>Gain si vous tirez la couleur choisie</th>
+        <th>Gain si vous tirez la couleur non choisie</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tbody>
+    {{ for cle, val in C.VALUES.items }}
+    <tr>
+        <td>{{ cle }}</td>
+        <td>{{ val.0 }}</td>
+        <td>{{ val.1 }}</td>
+        <td>{{ val.2 }}</td>
+        <td>{{ val.3 }}</td>
+        <td>
+            <div style="display: inline-block; width: 50px">
+                <input type="radio" name="choice_{{cle}}" id="choice_{{cle}}_A" value="True" required>
+                <label for="choice_{{cle}}_A" class="form-check-label">A</label>
+            </div>
+            <div style="display: inline-block; width: 50px">
+                <input type="radio" name="choice_{{cle}}" id="choice_{{cle}}_B" value="False" required>
+                <label for="choice_{{cle}}_B" class="form-check-label">B</label>
+            </div>
+        </td>
+    </tr>
+    {{ endfor }}
+    </tbody>
+</table>
+
+{{ next_button }}
+
+{{ include_sibling "InstructionsModal.html" }}
+
+{{ endblock }}
+
+{{ block scripts }}
+<script src="{{ static 'fill_auto.js' }}"></script>
+<script>
+
+    document.addEventListener("DOMContentLoaded", () => {
+        const rows = document.querySelectorAll('#tb_ambiguity tbody tr');
+
+        // Fonction pour sélectionner l'urne A pour toutes les lignes suivantes
+        function selectAFrom(rowIndex) {
+            for (let i = rowIndex; i < rows.length; i++) {
+                rows[i].querySelector('input[value="True"]').checked = true;
+            }
+        }
+
+        // Fonction pour sélectionner l'urne B pour toutes les lignes précédentes
+        function selectBUntil(rowIndex) {
+            for (let i = rowIndex; i >= 0; i--) {
+                rows[i].querySelector('input[value="False"]').checked = true;
+            }
+        }
+
+        // Ajout d'événements pour chaque ligne
+        rows.forEach((row, index) => {
+            row.querySelector('input[value="True"]').addEventListener('change', () => {
+                selectAFrom(index);
+            });
+            row.querySelector('input[value="False"]').addEventListener('change', () => {
+                selectBUntil(index);
+            });
+        });
+        if (js_vars.fill_auto)
+            fill_auto();
+    })
+</script>
+{{ endblock }}

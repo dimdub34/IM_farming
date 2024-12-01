@@ -1,0 +1,44 @@
+{{ block styles }}
+<style>
+    input[type=number]{
+        width: 100px;
+    }
+</style>
+{{ endblock }}
+
+{{ block title }}
+Questionnaire 1
+{{ endblock }}
+
+{{ block content }}
+
+<div class="card bg-light mb-3">
+    <div class="card-body">
+        <p>
+            Veuillez répondre aux 3 questions ci-dessous.
+        </p>
+    </div>
+</div>
+
+<div class="mb-3">
+{{ for field in form }}
+    <div class="form-control mb-1">
+        <label class="form-label" for="id_{{ field.name}}">{{ field.label }}</label>
+        {{ field }}
+    </div>
+{{ endfor }}
+</div>
+
+{{ next_button }}
+
+{{ endblock }}
+
+{{ block scripts }}
+<script src="{{ static 'fill_auto.js' }}"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        if (js_vars.fill_auto)
+            fill_auto();
+    })
+</script>
+{{ endblock }}

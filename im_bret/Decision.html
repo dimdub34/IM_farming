@@ -1,0 +1,72 @@
+{{ block styles }}
+<style>
+    input[type=number] {
+        width: 100px;
+    }
+
+    #table_boites, #table_boites tr, #table_boites td {
+        border: 1px solid gray;
+        border-collapse: collapse;
+    }
+
+    #table_boites td {
+        width: 35px;
+        height: 35px;
+    }
+</style>
+{{ endblock }}
+{{ block title }}
+Partie 4
+{{ endblock }}
+
+{{ block content }}
+<div class="card bg-light mb-3">
+    <div class="card-body">
+        {{ include_sibling "InstructionsTemplate.html" }}
+    </div>
+</div>
+
+
+{{ formfields }}
+
+{{ next_button }}
+
+{{ endblock }}
+
+{{ block scripts }}
+<script src="{{ static 'fill_auto.js' }}"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const table_boites = document.querySelector("#table_boites");
+        let compteur = 0;
+        for (let i = 0; i < 10; i++) {
+            let ligne = document.createElement("tr");
+            table_boites.appendChild(ligne);
+            for (let j = 0; j < 10; j++) {
+                compteur++;
+                let cell = document.createElement("td");
+                cell.innerHTML = `${compteur}`;
+                ligne.appendChild(cell)
+            }
+        }
+        document.querySelector("#id_n_boxes").addEventListener("input", (event) => {
+            // Récupère la valeur saisie
+            const value = parseInt(event.target.value);
+
+            // Réinitialiser les classes bg-info pour toutes les cellules
+            table_boites.querySelectorAll("td").forEach(cell => {
+                cell.classList.remove("bg-info");
+            });
+
+            // Appliquer la classe bg-info aux cellules correspondant à la valeur saisie
+            table_boites.querySelectorAll("td").forEach((cell, index) => {
+                if (index < value) {
+                    cell.classList.add("bg-info");
+                }
+            });
+        });
+        if (js_vars.fill_auto)
+            fill_auto();
+    });
+</script>
+{{ endblock }}

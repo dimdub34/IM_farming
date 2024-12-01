@@ -1,0 +1,61 @@
+{{ block title }}
+Partie {{ subsession.current_part }} - Fin
+{{ endblock }}
+
+{{ block content }}
+
+<div class="card bg-light mb-3">
+    <div class="card-body">
+        <p>
+            La partie {{ subsession.current_part }} est terminée. <br>
+            Ci-dessous le récapitulatif des {{ C.NUM_ROUNDS }} tours de la partie.
+        </p>
+
+    </div>
+</div>
+
+<div class="mb-3">
+    <table class="table table-sm mx-auto w-50">
+        <thead>
+        <tr>
+            <th>Tour</th>
+            <th>Information</th>
+            <th>Assurance</th>
+            <th>Dommage</th>
+            <th>Gain</th>
+        </tr>
+        </thead>
+        <tbody>
+        {{ for p in player.in_all_rounds }}
+        <tr>
+            <td>{{ p.round_number }}</td>
+            <td>{{ if p.info }} Oui {{ else }} Non {{ endif }}</td>
+            <td>{{ if p.fumigate }} Oui {{ else }} Non {{ endif }}</td>
+            <td>
+                {{ if not p.fumigate }}
+                {{ if p.pest }} Oui {{ else }} Non {{ endif }}
+                {{ else }}
+                -
+                {{ endif }}
+            </td>
+            <td>{{ p.round_payoff }}</td>
+        </tr>
+        {{ endfor }}
+        </tbody>
+    </table>
+</div>
+
+
+{{ next_button }}
+
+{{ endblock }}
+
+{{ block scripts }}
+<script src="{{static 'fill_auto.js' }}"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        if (js_vars.fill_auto)
+            fill_auto();
+    });
+</script>
+{{ endblock }}

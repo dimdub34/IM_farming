@@ -1,0 +1,50 @@
+{{ block title }}
+Partie {{ subsession.current_part }} - Résultat
+{{ endblock }}
+
+{{ block content }}
+
+<div class="text-end mb-3">
+    <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#modal_content">
+        Instructions
+    </button>
+</div>
+
+<div class="card bg-light mb-3">
+    <div class="card-header">
+        <h5>Tour {{ player.round_number }} sur {{ C.NUM_ROUNDS }}</h5>
+    </div>
+    <div class="card-body">
+        <p>
+            {{ if player.fumigate }}
+            Vous avez souscrit une assurance.
+            {{else}}
+            Vous n’avez pas souscrit d'assurance. <br>
+            {{ if player.pest }}
+            Le dommage a eu lieu.
+            {{else}}
+            Le dommage n’a pas eu lieu.
+            {{ endif }}
+            {{ endif }}
+            <br>
+            Votre gain pour ce tour est de <strong>{{ player.round_payoff }} points</strong>.
+        </p>
+    </div>
+</div>
+
+{{ next_button }}
+
+{{ include_sibling "InstructionsModal.html" }}
+
+{{ endblock }}
+
+{{ block scripts }}
+<script src="{{ static 'fill_auto.js' }}"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        if (js_vars.fill_auto)
+            fill_auto();
+    })
+</script>
+{{ endblock }}
+

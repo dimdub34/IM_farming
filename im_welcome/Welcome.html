@@ -1,0 +1,47 @@
+{{ block title }}
+Présentation de l'expérience
+{{ endblock }}
+
+{{ block content }}
+
+<div class="card bg-light mb-3">
+    <div class="card-body">
+        <p>
+            L'expérience est composée de 6 parties, pour un total de 51 décisions : 5 parties comportent 10 décisions
+            et une partie comporte une seule décision.
+        </p>
+        <p>
+            Chaque partie a ses propres instructions, que vous devez lire attentivement.
+            Si vous avez une question, levez la main et un expérimentateur viendra vous répondre.
+        </p>
+        <p>
+            À la fin de l'expérience, une des 51 décisions sera aléatoirement sélectionnée par le
+            programme informatique. Votre gain pour cette décision déterminera votre gain pour l'expérience.
+            Chacune des 51 décisions a la même probabilité d’être
+            sélectionnée pour déterminer votre gain, donc chaque décision est importante.
+        </p>
+        <p>
+            Votre gain final sera composé du forfait de déplacement de
+            {{ session.config.participation_fee|to0 }} auquel sera ajouté votre gain de l'expérience.
+        </p>
+        <p>
+            Durant l'expérience les montants seront exprimés en points.
+            Ces points seront convertis en
+            euros, avec le taux de conversion 1 point = {{ session.config.real_world_currency_per_point }} €.
+        </p>
+    </div>
+</div>
+
+{{ next_button }}
+
+{{ endblock }}
+
+{{ block scripts }}
+<script src="{{ static 'fill_auto.js' }}"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        if (js_vars.fill_auto)
+            fill_auto();
+    })
+</script>
+{{ endblock }}

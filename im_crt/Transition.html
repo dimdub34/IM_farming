@@ -1,0 +1,28 @@
+{{ block title }}
+Fin des parties
+{{ endblock }}
+
+{{ block content }}
+
+<div class="card bg-light mb-3">
+    <div class="card-body">
+        <p>
+            Les 6 parties sont maintenant terminées. Avant de connaître le détail des résultats des parties et votre
+            gain pour l'expérience, nous vous demandons de répondre à 3 questionnaires courts.
+        </p>
+    </div>
+</div>
+
+{{ next_button }}
+
+{{ endblock }}
+
+{{ block scripts }}
+<script src="{{static 'fill_auto.js' }}"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        if (js_vars.fill_auto)
+            fill_auto();
+    });
+</script>
+{{ endblock }}

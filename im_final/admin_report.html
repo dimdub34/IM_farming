@@ -1,0 +1,35 @@
+<p>
+    <span class="fw-bold">Information</span> : {{ session.vars.info }}
+    <br>
+    <span class="fw-bold">Game sequence</span> :
+</p>
+<ol>
+    {{ for g in session.vars.game_sequence }}
+    <li>{{ g }}</li>
+    {{ endfor }}
+</ol>
+
+<table class="table">
+    <thead>
+    <tr>
+        <th>Code</th>
+        <th>Label</th>
+        <th>Paid decision</th>
+        <th>Part</th>
+        <th>Part - Décision number</th>
+        <th>Payoff</th>
+    </tr>
+    </thead>
+    <tbody>
+    {{ for p in players_infos }}
+    <tr>
+        <td>{{ p.code }}</td>
+        <td>{{ p.label }}</td>
+        <td>{{ p.paid_decision }}</td>
+        <td>{{ p.part }}</td>
+        <td>{{ p.paid_decision_number }}</td>
+        <td>{{ p.payoff }}</td>
+    </tr>
+    {{ endfor }}
+    </tbody>
+</table>

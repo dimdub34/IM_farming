@@ -1,0 +1,25 @@
+{{ block title }}
+Fin de l'expérience
+{{ endblock }}
+
+{{ block content }}
+
+{{ include_sibling "FinalTemplate.html" }}
+
+<label for="id_comments">Vous pouvez écrire des commentaires sur l'expérience dans la zone ci-dessous.
+    Pensez ensuite à cliquer sur le bouton Enregistrer.</label>
+<textarea id="id_comments" name="comments" style="width: 100%; border-radius: 5px" rows="15" cols="500"></textarea>
+
+<button class="btn btn-primary" id="save">Enregistrer</button>
+
+{{ endblock }}
+
+{{ block scripts }}
+<script src="{{static 'fill_auto.js' }}"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        if (js_vars.fill_auto)
+            fill_auto();
+    });
+</script>
+{{ endblock }}

@@ -1,0 +1,211 @@
+<div class="card bg-light mb-3">
+    <div class="card-body">
+        <p>
+            L'expérience est terminée, merci pour votre participation.
+        </p>
+        <p>
+            {{ participant.vars.txt_final }} <br>
+            Avec le forfait de déplacement cela fait un total de {{ participant.payoff_plus_participation_fee }}.
+        </p>
+        <p>
+            Ci-dessous le détail des tours et gains pour chaque partie.
+        </p>
+    </div>
+</div>
+
+<div class=" card mb-1">
+    <div class="card-header"><h5>Partie 1</h5></div>
+    <div class="card-body">
+        <p>
+            {{ if session.vars.game_sequence.0 == "im_InfoNo" }}
+            Vous ne disposiez pas de l'information sur le risque de dommage.
+            {{ else }}
+            Vous disposiez de l'information sur le risque de dommage à chaque tour.
+            {{ endif }}
+        </p>
+        <table class="table table-sm mx-auto w-50 fs-6">
+            <thead>
+            <tr>
+                <th>Tour</th>
+                <th>Assurance</th>
+                <th>Dommage</th>
+                <th>Gain points</th>
+                <th>Gain euros</th>
+            </tr>
+            </thead>
+            <tbody>
+            {{ if session.vars.game_sequence.0 == "im_InfoNo" }}
+            {{ for row in participant.vars.im_InfoNo.rounds_info }}
+            <tr>
+                <td>{{ row.round_number }}</td>
+                <td>{{ if row.fumigate }} Oui {{ else }} Non {{ endif }}</td>
+                <td>{{ if row.fumigate }} - {{ else }} {{ if row.pest }} Oui {{ else }} Non {{ endif }}{{ endif }}</td>
+                <td>{{ row.round_payoff }}</td>
+                <td>{{ row.payoff }}</td>
+            </tr>
+            {{ endfor }}
+            {{ else }}
+            {{ for row in participant.vars.im_InfoFree.rounds_info }}
+            <tr>
+                <td>{{ row.round_number }}</td>
+                <td>{{ if row.fumigate }} Oui {{ else }} Non {{ endif }}</td>
+                <td>{{ if row.fumigate }} - {{ else }} {{ if row.pest }} Oui {{ else }} Non {{ endif }}{{ endif }}</td>
+                <td>{{ row.round_payoff }}</td>
+                <td>{{ row.payoff }}</td>
+            </tr>
+            {{ endfor }}
+            {{ endif }}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="card mb-1">
+    <div class="card-header"><h5>Partie 2</h5></div>
+    <div class="card-body">
+        <p>
+            {{ if session.vars.game_sequence.0 == "im_InfoNo" }}
+            Vous disposiez de l'information sur le risque de dommage à chaque tour.
+            {{ else }}
+            Vous ne disposiez pas de l'information sur le risque de dommage.
+            {{ endif }}
+        </p>
+        <table class="table table-sm mx-auto w-50 fs-6">
+            <thead>
+            <tr>
+                <th>Tour</th>
+                <th>Assurance</th>
+                <th>Dommage</th>
+                <th>Gain points</th>
+                <th>Gain euros</th>
+            </tr>
+            </thead>
+            <tbody>
+            {{ if session.vars.game_sequence.0 == "im_InfoNo" }}
+            {{ for row in participant.vars.im_InfoFree.rounds_info }}
+            <tr>
+                <td>{{ row.round_number }}</td>
+                <td>{{ if row.fumigate }} Oui {{ else }} Non {{ endif }}</td>
+                <td>{{ if row.fumigate }} - {{ else }} {{ if row.pest }} Oui {{ else }} Non {{ endif }}{{ endif }}</td>
+                <td>{{ row.round_payoff }}</td>
+                <td>{{ row.payoff }}</td>
+            </tr>
+            {{ endfor }}
+            {{ else }}
+            {{ for row in participant.vars.im_InfoNo.rounds_info }}
+            <tr>
+                <td>{{ row.round_number }}</td>
+                <td>{{ if row.fumigate }} Oui {{ else }} Non {{ endif }}</td>
+                <td>{{ if row.fumigate }} - {{ else }} {{ if row.pest }} Oui {{ else }} Non {{ endif }}{{ endif }}</td>
+                <td>{{ row.round_payoff }}</td>
+                <td>{{ row.payoff }}</td>
+            </tr>
+            {{ endfor }}
+            {{ endif }}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="card mb-1">
+    <div class="card-header"><h5>Partie 3</h5></div>
+    <div class="card-body">
+        <p>
+            Vous aviez la possibilité d'acheter l'information sur le risque de dommage à chaque tour.
+        </p>
+        <table class="table table-sm mx-auto w-75 fs-6">
+            <thead>
+            <tr>
+                <th>Tour</th>
+                <th>Information</th>
+                <th>Assurance</th>
+                <th>Dommage</th>
+                <th>Gain points</th>
+                <th>Gain euros</th>
+            </tr>
+            </thead>
+            <tbody>
+            {{ for row in participant.vars.im_InfoCostly.rounds_info }}
+            <tr>
+                <td>{{ row.round_number }}</td>
+                <td>{{ if row.info }} Oui {{ else }} Non {{ endif }}</td>
+                <td>{{ if row.fumigate }} Oui {{ else }} Non {{ endif }}</td>
+                <td>{{ if row.fumigate }} - {{ else }} {{ if row.pest }} Oui {{ else }} Non {{ endif }}{{ endif }}</td>
+                <td>{{ row.round_payoff }}</td>
+                <td>{{ row.payoff }}</td>
+            </tr>
+            {{ endfor }}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="card mb-1">
+    <div class="card-header"><h5>Partie 4</h5></div>
+    <div class="card-body">
+        <p>
+            {{ participant.vars.im_bret.txt_final }}
+        </p>
+    </div>
+</div>
+
+<div class="card mb-1">
+    <div class="card-header"><h5>Partie 5</h5></div>
+    <div class="card-body">
+        <p>
+            Vous avez choisi la couleur {{ participant.vars.im_ambiguity.chosen_color }}.
+        </p>
+        <table class="table table-sm w-75 mx-auto fs-6">
+            <thead>
+            <tr>
+                <th>Décision</th>
+                <th>Urne choisie</th>
+                <th>Couleur urne A</th>
+                <th>Couleur urne B</th>
+                <th>Gain points</th>
+                <th>Gain euros</th>
+            </tr>
+            </thead>
+            <tbody>
+            {{ for row in participant.vars.im_ambiguity.choices_info }}
+            <tr>
+                <td>{{ row.choice_number }}</td>
+                <td>{{ row.choice }}</td>
+                <td>{{ row.A }}</td>
+                <td>{{ row.B }}</td>
+                <td>{{ row.choice_payoff }}</td>
+                <td>{{ row.payoff }}</td>
+            </tr>
+            {{ endfor }}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="card mb-1">
+    <div class="card-header"><h5>Partie 6</h5></div>
+    <div class="card-body">
+        <table class="table table-sm mx-auto w-50 fs-6">
+            <thead>
+            <tr>
+                <th>Décision</th>
+                <th>Option choisie</th>
+                <th>Gain points</th>
+                <th>Gain euros</th>
+            </tr>
+            </thead>
+            <tbody>
+            {{ for row in participant.vars.im_simplicity.choices_info }}
+            <tr>
+                <td>{{ row.choice_number }}</td>
+                <td>{{ row.choice }}</td>
+                <td>{{ row.choice_payoff }}</td>
+                <td>{{ row.payoff }}</td>
+            </tr>
+            {{ endfor }}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+

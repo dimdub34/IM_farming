@@ -1,0 +1,55 @@
+{{ block title }}
+Partie {{ subsession.current_part }} - Choix de souscrire une assurance
+{{ endblock }}
+
+{{ block content }}
+
+<div class="text-end mb-3">
+    <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#modal_content">
+        Instructions
+    </button>
+</div>
+
+<div class="card bg-light mb-3">
+    <div class="card-header bg-success">
+        <img src="{{ static 'im_InfoCostly/umbrella.png'}}" style="float: right; height: 50px"
+             alt="umbrella"/>
+        <h5>Tour {{subsession.round_number}} sur {{C.NUM_ROUNDS}}</h5>
+    </div>
+    <div class="card-body">
+        <p>
+            {{ if player.info }}
+            {{ if session.vars.info == "proba" }}
+            La probabilité d’être affecté par le dommage
+            <strong>sur ce tour est de {{ player.percentage_p }} %</strong>. <br>
+            {{ elif session.vars.info == "level" }}
+                Le risque d'être affecté par le dommage <strong>sur ce tour est {{ player.displayed_p }}</strong>. <br>
+            {{ endif }}
+            Nous vous rappelons que cette information n'est pas parfaite, elle comprend une certaine marge d’erreur. <br>
+            {{ else }}
+            La probabilité d’être affecté par le dommage est en moyenne, sur les 10 tours, de 50 %. <br>
+            {{ endif }}
+            Vous pouvez souscrire à une assurance, pour un coût de {{ C.C }} points, qui indemnisera le dommage s'il
+            a lieu.
+        </p>
+    </div>
+</div>
+
+{{ formfields }}
+
+{{ next_button }}
+
+{{ include_sibling "InstructionsModal.html" }}
+
+{{ endblock }}
+
+{{ block scripts }}
+<script src="{{ static 'fill_auto.js' }}"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        if (js_vars.fill_auto)
+            fill_auto();
+    })
+</script>
+{{ endblock }}
+

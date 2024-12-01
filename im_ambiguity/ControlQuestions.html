@@ -1,0 +1,98 @@
+{{ block styles }}
+<style>
+    input[type=number]{
+        width: 100px;
+    }
+</style>
+{{ endblock }}
+
+{{ block title }}
+Partie 5 - Questions de compréhension
+{{ endblock }}
+
+{{ block content }}
+
+<div class="text-end mb-3">
+    <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#modal_content">
+        Instructions
+    </button>
+</div>
+
+<div class="card bg-light mb-3">
+    <div class="card-body">
+        <p>
+            Ci-dessous 3 questions pour que vous puissiez vous assurer d'avoir bien compris les instructions.
+        </p>
+
+    </div>
+</div>
+<p>
+    Voici le tableau contenant les 10 situations et leurs gains associés.
+</p>
+<table class="table table-bordered table-sm text-center">
+    <thead class="bg-light">
+    <tr>
+        <th rowspan="2" style="vertical-align: middle">Décision</th>
+        <th colspan="2"><span class="text-info">URNE A</span> <br> 5 boules ROUGES et 5 boules BLEUES</th>
+        <th colspan="2"><span class="text-info">URNE B</span> <br> 10 boules, toutes ROUGES ou toutes BLEUES</th>
+    </tr>
+    <tr>
+        <th>Gain si vous tirez la couleur choisie</th>
+        <th>Gain si vous tirez la couleur non choisie</th>
+        <th>Gain si vous tirez la couleur choisie</th>
+        <th>Gain si vous tirez la couleur non choisie</th>
+    </tr>
+    </thead>
+    <tbody>
+    {{ for cle, val in C.VALUES.items }}
+    <tr>
+        <td>{{ cle }}</td>
+        <td>{{ val.0 }}</td>
+        <td>{{ val.1 }}</td>
+        <td>{{ val.2 }}</td>
+        <td>{{ val.3 }}</td>
+    </tr>
+    {{ endfor }}
+    </tbody>
+</table>
+
+{{ formfields }}
+
+<button type="button" class="btn btn-primary" onclick="valider()">Suivant</button>
+
+<p class="mt-3 form-control-errors" id="error_msg" style="visibility: hidden"></p>
+
+{{ include_sibling "InstructionsModal.html" }}
+
+{{ endblock }}
+
+{{ block scripts }}
+<script src="{{ static 'fill_auto.js' }}"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        if (js_vars.fill_auto)
+            fill_auto();
+    })
+
+    function valider() {
+        const error_msg = document.querySelector("#error_msg");
+        let error = false;
+        if (forminputs.comprehension_1.value !== "800") {
+            error_msg.innerHTML = "Votre réponse à la question 1 n'est pas correcte.";
+            error = true;
+        } else if (forminputs.comprehension_2.value !== "0") {
+            error_msg.innerHTML = "Votre réponse à la question 2 n'est pas correcte.";
+            error = true;
+        } else if (forminputs.comprehension_3.value !== "2") {
+            error_msg.innerHTML = "Votre réponse à la question 3 n'est pas correcte.";
+            error = true;
+        }
+        if (error === true) {
+            error_msg.style.visibility = "visible";
+            return false
+        } else {
+            document.querySelector("form").submit();
+        }
+    }
+</script>
+{{ endblock }}

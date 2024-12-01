@@ -1,0 +1,118 @@
+<div class="card bg-white mb-3">
+    <div class="card-body">
+        <p>
+            Cette partie est proche des deux précédentes. La probabilité moyenne de subir un dommage sur tous les
+            {{ C.NUM_ROUNDS }} tours est toujours égale à 50 %. <br>
+            <strong>
+                Chaque tour, vous pouvez, si vous le souhaitez et moyennant un coût de {{ C.INFO_COST }} points,
+                être informé(e) de
+                {{ if session.vars.info == "proba" }}
+                la probabilité spécifique de subir un dommage lors du tour.
+                {{ elif session.vars.info == "level" }}
+                l’intensité du risque de subir un dommage lors du tour.
+                {{ endif }}
+            </strong>
+        </p>
+
+    </div>
+</div>
+<p>
+    Cette partie comporte <em>{{ C.NUM_ROUNDS }} tours</em>.
+</p>
+<p>
+    <strong>Chaque tour, vous avez une certaine probabilité d’être affecté(e) par un dommage.</strong>
+    La probabilité de subir le
+    dommage est différente à chaque tour, mais en <em>moyenne sur les {{ C.NUM_ROUNDS }} tours elle est
+    égale à 50 %</em>, autrement dit en moyenne sur les {{ C.NUM_ROUNDS }} tours il y a une chance sur deux que
+    le dommage se produise.
+</p>
+<p>
+    <strong>
+        Chaque tour, vous avez la possibilité d'acheter une information, moyennant un coût de {{ C.INFO_COST }} points.
+    </strong>
+    Si vous achetez cette information,
+    {{ if session.vars.info == "proba" }}
+    vous êtes informé(e) de la probabilité de subir le dommage pour le tour.
+    <em>Cette information n'est pas parfaite, elle comprend une certaine marge d’erreur.</em>
+    L’erreur maximale ne peut pas être supérieure à 20 % (écart maximum positif ou négatif entre la probabilité
+    qui vous est communiquée et la probabilité réelle). De plus, en moyenne, les erreurs s’annulent et les
+    petites erreurs (proches de 0 %) sont plus probables que les grosses erreurs (proches de 20 %).
+
+    {{ elif session.vars.info == "level" }}
+    vous êtes informé(e) de l’intensité du risque de
+    subir le dommage pour le tour : "très élevé", "élevé", "moyen", "faible" ou "très faible".
+    <em>Cette information n'est pas parfaite, elle comprend une certaine marge d’erreur.</em>
+    L’erreur maximale ne peut décaler l’affichage de la catégorie de risque que d’un seul niveau, vers la catégorie
+    juste supérieure ou juste inférieure. De plus, en moyenne, les erreurs s’annulent.
+    {{ endif }}
+</p>
+<ul>
+    <li>Si le dommage n'a pas lieu, votre gain est de <em>{{ C.R_MAX }} points</em> (gain sans dommage).</li>
+    <li>Si le dommage a lieu, votre gain est de <em>{{ C.R_MIN }} points</em> (gain avec dommage).</li>
+</ul>
+<p>
+    <strong>Chaque tour, vous avez la possibilité de souscrire une assurance, pour un coût de {{ C.C }} points</strong>.
+    Si vous souscrivez à l'assurance, elle indemnise complètement le dommage, s’il a lieu. Dans ce cas, votre gain
+    total pour le tour est égal à votre gain sans dommage ({{ C.R_MAX }} points)
+    moins le coût de l'assurance ({{ C.C }} points), donc
+    <em>
+        <script>document.write(`${js_vars.R_MAX - js_vars.C}`)</script>
+        points</em>.
+</p>
+{{ if session.vars.info == "level" }}
+<p class="fw-bold">
+    Il est recommandé de souscrire une assurance lorsque le risque de dommage est "élevé" ou "très élevé".
+    Néanmoins, vous êtes libre de choisir de souscrire ou non l’assurance à chaque tour.
+</p>
+{{ endif }}
+<p>
+    <strong>Chaque tour, vous devez prendre deux décisions</strong> :
+    (i) acheter ou non de l'information, et (ii) souscrire ou non
+    une assurance.
+    Vous avez donc la possibilité d'obtenir des montants de gains différents selon vos décisions et selon que le
+    dommage ait lieu ou non.
+</p>
+<p>
+    Le tableau ci-dessous donne les gains obtenus dans chacune des situations possibles :
+</p>
+<table class="table table-bordered mx-auto w-75 text-center bg-white">
+    <tr>
+        <th><span class="text-info">Sans achat d’information</span></th>
+        <th colspan="2">Vous avez souscrit une assurance</th>
+    </tr>
+    <tr>
+        <th></th>
+        <th>Oui</th>
+        <th>Non</th>
+    </tr>
+    <tr>
+        <td><b>Le dommage a eu lieu</b></td>
+        <td>400</td>
+        <td>300</td>
+    </tr>
+    <tr>
+        <td><b>Le dommage n'a pas eu lieu</b></td>
+        <td>400</td>
+        <td>500</td>
+</table>
+<table class="table table-bordered mx-auto w-75 text-center bg-white">
+    <tr>
+        <th><span class="text-info">Avec achat d’information</span></th>
+        <th colspan="2">Vous avez souscrit une assurance</th>
+    </tr>
+    <tr>
+        <th></th>
+        <th>Oui</th>
+        <th>Non</th>
+
+    </tr>
+    <tr>
+        <td><b>Le dommage a eu lieu</b></td>
+        <td>372</td>
+        <td>272</td>
+    </tr>
+    <tr>
+        <td><b>Le dommage n'a pas eu lieu</b></td>
+        <td>372</td>
+        <td>472</td>
+</table>

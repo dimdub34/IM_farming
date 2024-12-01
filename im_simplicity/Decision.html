@@ -1,0 +1,97 @@
+{{ block styles }}
+<style>
+    table tr {
+        vertical-align: middle;
+    }
+</style>
+{{ endblock }}
+
+{{ block title }}
+Partie 6
+{{ endblock }}
+
+{{ block content }}
+<div class="card bg-light mb-3">
+    <div class="card-body">
+        {{ include_sibling "InstructionsTemplate.html" }}
+    </div>
+</div>
+<table id="ambiguity" class="table table-bordered table-sm text-center">
+    <thead class="bg-light">
+    <tr>
+        <th rowspan="2">Décision</th>
+        <th class="text-info">OPTION A</th>
+        <th colspan="2" class="text-info">OPTION B</th>
+        <th rowspan="2">Votre choix</th>
+    </tr>
+    <tr>
+        <th>{{ C.PROBAS.0 }} Boîtes</th>
+        <th>{{ C.PROBAS.1 }} Boîtes</th>
+        <th>{{ C.PROBAS.2 }} Boîtes</th>
+    </tr>
+    </thead>
+    <tbody>
+    {{ for k, v in C.VALUES.items }}
+    <tr>
+        <td>{{ k }}</td>
+        <td>{{ v.0 }}</td>
+        <td>{{ v.1 }}</td>
+        <td>{{ v.2 }}</td>
+        <td>
+            <div style="display: inline-block; width: 50px">
+                <input type="radio" name="choice_{{k}}" id="choice_{{k}}_A" value="True" required>
+                <label for="choice_{{k}}_A" class="form-check-label">A</label>
+            </div>
+            <div style="display: inline-block; width: 50px">
+                <input type="radio" name="choice_{{k}}" id="choice_{{k}}_B" value="False" required>
+                <label for="choice_{{k}}_B" class="form-check-label">B</label>
+            </div>
+
+        </td>
+    </tr>
+    {{ endfor }}
+    </tbody>
+</table>
+
+{{ next_button }}
+
+{{ endblock }}
+
+{{ block scripts }}
+<script src="{{ static 'fill_auto.js' }}"></script>
+<script>
+    // Fonction pour sélectionner toutes les options A à partir d'une ligne
+    function selectAFrom(rowIndex) {
+        const rows = document.querySelectorAll('#ambiguity tbody tr');
+        for (let i = rowIndex; i < rows.length; i++) {
+            rows[i].querySelector('input[value="True"]').checked = true;
+        }
+    }
+
+    // Fonction pour sélectionner toutes les options B jusqu'à une ligne
+    function selectBUntil(rowIndex) {
+        const rows = document.querySelectorAll('#ambiguity tbody tr');
+        for (let i = rowIndex; i >= 0; i--) {
+            rows[i].querySelector('input[value="False"]').checked = true;
+        }
+    }
+
+
+    document.addEventListener("DOMContentLoaded", () => {
+        // Ajout d'événements pour chaque ligne
+        const rows = document.querySelectorAll('#ambiguity tbody tr');
+        console.log(rows)
+        rows.forEach((row, index) => {
+            console.log(row, index);
+            row.querySelector('input[value="True"]').addEventListener('change', () => {
+                selectAFrom(index);
+            });
+            row.querySelector('input[value="False"]').addEventListener('change', () => {
+                selectBUntil(index);
+            });
+        });
+        if (js_vars.fill_auto)
+            fill_auto();
+    })
+</script>
+{{ endblock }}

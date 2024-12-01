@@ -1,0 +1,53 @@
+{{ block styles }}
+<style>
+    input[type=range] {
+        width: 500px;
+    }
+</style>
+{{ endblock }}
+
+{{ block title }}
+Questionnaire 2
+{{ endblock }}
+
+{{ block content }}
+
+<div class="mb-3">
+    {{ for field in form }}
+    {{ if field.name != "error_new" }}
+    <div class="form-control mb-1">
+        <label class="form-label" for="id_{{ field.name }}">{{ field.label }}</label>
+        <div>{{ field }}</div>
+    </div>
+    {{ endif }}
+    {{ endfor }}
+</div>
+
+<p class="fst-italic">
+    Dans certaines parties, une information pouvait être fournie sur la probabilité spécifique de survenue d’un dommage
+    à chacun des tours (plutôt qu’en moyenne sur 10 tours). Il était indiqué que cette information pouvait être
+    accompagnée d’une certaine marge d’erreur.
+</p>
+<div class="mb-3">
+    {{ formfield "error_new" }}
+</div>
+
+{{ next_button }}
+
+<p class="mt-3 form-control-errors" style="visibility: hidden" id="msg_error">
+    Vous devez avoir déplacé chaque curseur pour pouvoir valider.
+</p>
+
+{{ endblock }}
+
+{{ block scripts }}
+<script src="{{ static 'fill_auto.js' }}"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        if (js_vars.fill_auto)
+            fill_auto();
+    });
+
+</script>
+{{ endblock }}
+

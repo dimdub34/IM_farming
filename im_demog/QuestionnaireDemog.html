@@ -1,0 +1,54 @@
+{{ block title }}
+Questionnaire 3
+{{ endblock }}
+
+{{ block content }}
+
+<div class="mb-3">
+    {{ for field in form }}
+    <div class="form-control mb-1">
+        <label class="form-label" for="id_{{ field.name }}">{{ field.label }}</label>
+        <div>
+            {{ field }}
+        </div>
+    </div>
+    {{ endfor }}
+</div>
+
+{{ next_button }}
+
+{{ endblock }}
+
+{{ block scripts }}
+<script src="{{ static 'fill_auto.js' }}"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // Obtenir les éléments du DOM pour les diplômes et disciplines
+        const diplomeRadios = document.querySelectorAll('input[name="diplome"]');
+        const disciplineRadio = document.querySelector('#id_discipline-9'); // "Non concerné(e)"
+
+        // Liste des diplômes pour lesquels la discipline n'est pas automatiquement réglée à "Non concerné(e)"
+        const allowedDiplomes = ['4', '5', '6']; // Licence (4), Master (5), Doctorat (6)
+
+        // Ajouter un écouteur d'événement pour chaque radio button des diplômes
+        diplomeRadios.forEach(function (radio) {
+            radio.addEventListener('change', function () {
+                const selectedValue = radio.value;
+
+                // Si le diplôme sélectionné n'est pas dans la liste des diplômes autorisés
+                if (!allowedDiplomes.includes(selectedValue)) {
+                    // Sélectionner la discipline "Non concerné(e)"
+                    disciplineRadio.checked = true;
+                } else {
+                    disciplineRadio.checked = false;
+                }
+            });
+        });
+
+        if (js_vars.fill_auto)
+            fill_auto();
+
+    });
+</script>
+{{ endblock }}
+

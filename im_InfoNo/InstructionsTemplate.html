@@ -1,0 +1,69 @@
+{{ if subsession.current_part > 1 }}
+<div class="card mb-3">
+    <div class="card-body">
+        <p>
+            Cette partie est identique à la précédente,
+            sauf que <strong>vous n'aurez plus l'information sur
+            {{ if session.vars.info == "proba" }}
+            la probabilité
+            {{ elif session.vars.info == "level" }}
+            le risque
+            {{ endif }}
+            de subir un dommage pour chaque tour</strong>.
+        </p>
+    </div>
+</div>
+{{ endif }}
+<p>
+    Cette partie comporte <em>{{ C.NUM_ROUNDS }} tours</em>.
+</p>
+<p>
+    <strong>Chaque tour, vous avez une certaine probabilité d’être affecté(e) par un dommage.</strong>
+    La probabilité de subir le
+    dommage est différente à chaque tour, mais <em>en moyenne sur les {{ C.NUM_ROUNDS }} tours elle est
+    égale à 50 %</em>, autrement dit en moyenne sur les {{ C.NUM_ROUNDS }} tours il y a une chance sur deux que
+    le dommage se produise.
+</p>
+<p>
+    <em>Vous n'avez pas l'information sur la probabilité spécifique du tour d'être affecté(e) par le dommage.</em>
+</p>
+<ul>
+    <li>Si le dommage n'a pas lieu, votre gain est de <em>{{C.R_MAX}} points</em> (gain sans dommage)</li>
+    <li>Si le dommage a lieu, votre gain est de <em>{{C.R_MIN}} points</em> (gain avec dommage).</li>
+</ul>
+<p>
+    <strong>Chaque tour, vous avez la possibilité de souscrire une assurance, pour un coût de {{C.C}} points</strong>.
+    Si vous souscrivez à l'assurance, elle indemnise complètement le dommage, s’il a lieu. Dans ce cas, votre gain
+    total pour le tour est égal à votre gain sans dommage ({{C.R_MAX}} points)
+    moins le coût de l'assurance ({{C.C}} points), donc
+    <em>
+        <script>document.write(`${js_vars.R_MAX - js_vars.C}`)</script>
+        points</em>.
+</p>
+<p>
+    Vous avez donc la possibilité d'obtenir trois montants de gains différents selon votre décision de souscrire
+    ou non une assurance, et selon que le dommage ait lieu ou non.
+</p>
+<p>
+    Le tableau ci-dessous donne les gains obtenus dans chacune des situations possibles :
+</p>
+<table class="table table-sm table-bordered text-center mx-auto bg-white w-75">
+    <tr>
+        <th rowspan="2"></th>
+        <th colspan="2">Vous avez souscrit une assurance?</th>
+    </tr>
+    <tr>
+        <th>Oui</th>
+        <th>Non</th>
+
+    </tr>
+    <tr>
+        <td><b>Le dommage a lieu</b></td>
+        <td>400</td>
+        <td>300</td>
+    </tr>
+    <tr>
+        <td><b>Le dommage n'a pas lieu</b></td>
+        <td>400</td>
+        <td>500</td>
+</table>
